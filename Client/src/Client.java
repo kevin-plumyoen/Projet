@@ -51,7 +51,19 @@ public class Client implements Runnable{
 	}
 	
 	public void debutJeu() {
-		boolean ok = false;
+		boolean ok = true;
+		//do {
+			writer.print("QUIT");
+			writer.flush();
+			try {
+				sock.close();
+				System.out.println("Connexion fermÃ©e");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		//}while(ok);
+		/*boolean ok = false;
 		do {
 			byte[] b = null;
 			System.out.println("Voulez vous débuter une partie? o/n");
@@ -62,10 +74,10 @@ public class Client implements Runnable{
 				e.printStackTrace();
 			}
 			String rep = b.toString();
-			if(rep.contains("o")) {
+		//	if(rep.contains("o")) {
 				writer.println("READY");
 				writer.flush();
-			}			
+		//	}			
 		}while(!ok);
 		do {
 			try {
@@ -79,7 +91,7 @@ public class Client implements Runnable{
 				System.out.println("Lancement jeu");
 				ok=false;
 			}			
-		}while(ok);
+		}while(ok);*/
 	}
 	
 	public void quit(){
@@ -111,8 +123,8 @@ public class Client implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		connect();
-		this.debutJeu();
-		//quit();
+		debutJeu();
+		quit();
 		
 	}
 	

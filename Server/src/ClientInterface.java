@@ -56,6 +56,7 @@ public class ClientInterface implements Runnable {
 			}while(!connected);			
 			//Mise en attente
 			do{
+				System.out.println("connecté ^^");
 				in = reader.readLine();
 				if(in.contains("QUIT")){
 					connected=false;
