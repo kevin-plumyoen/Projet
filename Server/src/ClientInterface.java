@@ -65,6 +65,7 @@ public class ClientInterface implements Runnable {
 				else if(in.contains("READY")) {
 					writer.println("START");
 					writer.flush();
+					System.out.println("start");
 				}
 			}while(connected);
 			
