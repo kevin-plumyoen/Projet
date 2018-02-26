@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 
 public class Client implements Runnable{
@@ -19,6 +20,7 @@ public class Client implements Runnable{
 	private String out;
 	
 	private boolean connected = false;
+	private byte[] bs;
 	
 	public Client(){
 		try {
@@ -53,20 +55,22 @@ public class Client implements Runnable{
 	public void debutJeu() {
 		boolean ok = false;
 		do {
-			byte[] b = null;
-			System.out.println("Voulez vous débuter une partie? o/n");
-			try {
-				System.in.read(b, 0, 1);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			String rep = b.toString();
-			if(rep.contains("o")) {
+			System.out.println("commencer? o/n");
+			Scanner sc = new Scanner(System.in);
+			String rep = null;
+			
+			rep = sc.nextLine();
+			
+			if(rep.contains("o")){
+				System.out.println("go");
 				writer.println("READY");
 				writer.flush();
-			}			
+				ok=true;		
+			}
+			
+				
 		}while(!ok);
+	
 		do {
 			try {
 				in = reader.readLine();
@@ -75,15 +79,22 @@ public class Client implements Runnable{
 				e.printStackTrace();
 			}
 			if(in.contains("START")){
-				connected=false;
-				System.out.println("Lancement jeu");
-				ok=false;
-			}			
+				System.out.println("Début du jeu");
+				this.jeu();
+			}
 		}while(ok);
 	}
 	
+	private void jeu() {
+		// TODO Auto-generated method stub
+		boolean play =true;
+		do {
+			
+		}while(play);
+	}
+
 	public void quit(){
-		writer.print("QUIT");
+		writer.println("QUIT");
 		writer.flush();
 		try {
 			sock.close();
@@ -111,8 +122,9 @@ public class Client implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		connect();
-		this.debutJeu();
-		//quit();
+		debutJeu();
+		jeu();
+		quit();
 		
 	}
 	
