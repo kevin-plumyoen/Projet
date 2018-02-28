@@ -1,32 +1,38 @@
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+public class Client{
 
-public class Client implements Runnable{
-
-	private String nom;
-	private String prenom;
+	private Connexion con;
+	private Scanner scn;
 	
-	private Socket sock;
-	private PrintWriter writer = null;
-	private BufferedReader reader = null;
-	private String in;
-	private String out;
-	
-	private boolean connected = false;
-	private byte[] bs;
+	private String host;
+	private int port;
 	
 	public Client(){
+		scn = new Scanner(System.in);
+		connexion();
+		Menu m = new Menu(con,scn);
+		
+	}
+	
+	private void connexion(){
+		System.out.print("Host : ");
+		host = scn.nextLine();
+		System.out.print("Port : ");
+		port = scn.nextInt();
+		
+		if(host != ""){
+			con.host = host;
+		}
+		if(port != 0){
+			con.port = port;
+		}
+		
 		try {
-			this.sock = new Socket("127.0.0.1",60000);
-			writer = new PrintWriter(sock.getOutputStream());
-			reader = new BufferedReader (new InputStreamReader (sock.getInputStream()));
+			con.sock = new Socket(host,port);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -34,6 +40,7 @@ public class Client implements Runnable{
 		}
 	}
 	
+	/*
 	public void connect(){
 		System.out.println("Debut connect");
 		do{	
@@ -79,7 +86,7 @@ public class Client implements Runnable{
 				e.printStackTrace();
 			}
 			if(in.contains("START")){
-				System.out.println("Début du jeu");
+				System.out.println("Dï¿½but du jeu");
 				this.jeu();
 			}
 		}while(ok);
@@ -118,17 +125,15 @@ public class Client implements Runnable{
 	 } 
 	
 
-	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		connect();
 		debutJeu();
 		jeu();
 		quit();
-		
 	}
 	
 	
-	
+*/
 
 }
