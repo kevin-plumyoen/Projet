@@ -132,6 +132,10 @@ public class ClientInterface implements Runnable {
 				System.out.println("start");
 				this.play();
 			}
+			else if(in.contains("CHEAT")) {
+				this.joueur.addToTotalScore(Integer.parseInt(in.split(" ", 2)[1]));
+				this.s.majRank();
+			}
 			else {
 				writer.println("ERR "+in);
 				writer.flush();
