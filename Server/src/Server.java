@@ -117,7 +117,7 @@ public class Server implements Runnable{
 			System.out.println(p.toString());
 			System.out.println(p.getNom());
 			System.out.println(p.getPrenom());
-			if(p.getNom()==nom && p.getPrenom()==prenom){
+			if(p.getNom().matches(nom) && p.getPrenom().matches(prenom)){
 				System.out.println("trouver !!!");
 				return true;
 			}

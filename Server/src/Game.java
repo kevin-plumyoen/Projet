@@ -91,6 +91,11 @@ public class Game implements Runnable{
 					writer.flush();
 				}
 			}
+			else {
+				writer.println("ERR "+in);
+				writer.flush();
+				System.out.println(in);
+			}
 		}while(run);
 		long fin = System.currentTimeMillis();
 		

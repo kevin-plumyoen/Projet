@@ -75,6 +75,20 @@ public class ClientInterface implements Runnable {
 					writer.flush();
 				}
 			}
+			else if(subIn[0].contains("QUIT")) {
+				System.out.println("quit");
+				try {
+					this.sock.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else {
+				writer.println("ERR "+in);
+				writer.flush();
+				System.out.println(in);
+			}
 		}while(!connected);
 	}
 
@@ -117,6 +131,11 @@ public class ClientInterface implements Runnable {
 				writer.flush();
 				System.out.println("start");
 				this.play();
+			}
+			else {
+				writer.println("ERR "+in);
+				writer.flush();
+				System.out.println(in);
 			}
 		}while(connected);
 	}
