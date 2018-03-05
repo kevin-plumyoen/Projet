@@ -20,21 +20,6 @@ public class ClientInterface implements Runnable {
 	public ClientInterface(Socket client, Server s) {
 		sock = client;
 		this.s=s;
-<<<<<<< HEAD
-		
-=======
-	}
-
-	public void run() {		
->>>>>>> Client
-		try {
-			writer = new PrintWriter(sock.getOutputStream());
-			reader = new BufferedReader (new InputStreamReader (sock.getInputStream()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 	}
 	
 	public void connect() {
@@ -77,7 +62,6 @@ public class ClientInterface implements Runnable {
 		}while(!connected);
 	}
 
-	@Override
 	public void run() {		
 	
 			//Étape de connexion ou d'inscription 

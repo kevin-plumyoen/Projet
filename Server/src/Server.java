@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class Server implements Runnable{
 
+	private static final String Server = null;
 	//On initialise des valeurs par défaut
 	private int port;
 	private ServerSocket server = null;
@@ -18,6 +19,14 @@ public class Server implements Runnable{
 	
 	private ArrayList<Player> playerList = new ArrayList<Player>();
 	
+	public ArrayList<Player> getPlayerList() {
+		return playerList;
+	}
+
+	public void setPlayerList(ArrayList<Player> playerList) {
+		this.playerList = playerList;
+	}
+
 	public Server(int pPort){
 		port = pPort;
 		try {
@@ -33,6 +42,9 @@ public class Server implements Runnable{
 	
 	// On lance notre serveur
 	public void run() {
+		Gestion gestion = new Gestion(this);
+		Thread gere = new Thread(gestion);
+		gere.start();
 		while (isRunning) {
 			if(nbPlayer<nbPlayerMax){
 				try {
@@ -41,49 +53,7 @@ public class Server implements Runnable{
 					// Une fois reçue, on la traite dans un thread séparé
 					System.out.println("Connexion cliente reçue.");
 					Thread t = new Thread(new ClientInterface(client,this));
-					t.start();
-					
-					Thread gestion = new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-							// TODO Auto-generated method stub
-							boolean run = true;
-							System.out.println("gestion");
-							do {
-								System.out.println("Gestion du serveur :");
-								System.out.println("[1] to close the server");
-								System.out.println("[2] to reset player list (erase scores to)");
-								System.out.println("[3] to reset scores");
-								
-								Scanner sc = new Scanner(System.in);
-								int choix = sc.nextInt();
-								switch (choix) {
-								case 1 :
-									try {
-										server.close();
-										System.out.println("Server fermé");
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									break;
-								case 2 :
-									playerList = new ArrayList<Player>();
-									break;
-								case 3 :
-									for(Player p : playerList) {
-										p.setLastScore(0);
-										p.addToTotalScore(-(p.getTotalScore()));
-									}
-									break;
-								}
-							}while(run);
-						}
-						
-					});
-					gestion.start();
-					
+					t.start();					
 					for(Player p : playerList) {
 						System.out.println(p.toString());
 					}				
