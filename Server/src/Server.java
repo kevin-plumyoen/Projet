@@ -38,6 +38,9 @@ public class Server implements Runnable{
 		}
 		isRunning=true;
 		System.out.println("Server Lancé");
+		
+		playerList.add(new Player("rafik","keke"));
+		
 	}
 	
 	// On lance notre serveur

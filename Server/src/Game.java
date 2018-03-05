@@ -60,9 +60,9 @@ public class Game implements Runnable{
 				e.printStackTrace();
 			}
 			System.out.println("une reponse 1");
+			in.toUpperCase();
 			String[] subIn = in.split(" ", 2);
-			if(subIn[0].contains("REP")) {
-				in.toUpperCase();
+			if(subIn[0].contains("REP")) {				
 				System.out.println("une reponse 2");
 				if(in.contains(mot)) {
 					writer.println("GOOD");

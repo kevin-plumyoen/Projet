@@ -40,6 +40,10 @@ public class ClientInterface implements Runnable {
 			}
 			String[] subIn = in.split(" ", 3);
 			
+			for(Player p : this.s.getPlayerList()) {
+			System.out.println(p.toString());
+			}	
+			
 			if(subIn[0].contains("INS")){		
 				this.joueur = new Player(subIn[1],subIn[2]);
 				if((s.searchUser(this.joueur))){
@@ -57,7 +61,9 @@ public class ClientInterface implements Runnable {
 				
 			}
 			else if(subIn[0].contains("CON")){
+				System.out.println("en co");
 				if(s.searchUser(subIn[1],subIn[2])){
+					System.out.println("joueur existe");
 					writer.println("ACK");
 					writer.flush();
 					this.joueur = this.s.getPlayer(subIn[1],subIn[2]);
@@ -102,6 +108,9 @@ public class ClientInterface implements Runnable {
 			if(in.contains("QUIT")){
 				connected=false;
 				System.out.println("Fermeture InterfaceClient");
+			}
+			else if(in.contains("DECON")) {
+				this.connect();
 			}
 			else if(in.contains("READY")) {
 				writer.println("START");
