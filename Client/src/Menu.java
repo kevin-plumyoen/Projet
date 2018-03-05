@@ -86,7 +86,7 @@ public class Menu {
 				}
 			}
 			
-			if(rep==2){
+			else if(rep==2){
 				//Send Request
 				System.out.print("Nom : ");
 				nom = scn.nextLine();
@@ -111,8 +111,10 @@ public class Menu {
 				}
 			}
 			
-			if(rep==3){
+			else if(rep==3){
 				loop = false;
+				con.writer.println("QUIT");
+				con.writer.flush();
 				return;
 			}
 			else{
@@ -148,8 +150,10 @@ public class Menu {
 				}
 			}
 			
-			if(rep==2){
+			else if(rep==2){
 				connected = false;
+				con.writer.println("DECON");
+				con.writer.flush();
 				return;
 			}
 			else{
