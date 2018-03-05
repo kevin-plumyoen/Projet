@@ -39,7 +39,7 @@ public class Server implements Runnable{
 		isRunning=true;
 		System.out.println("Server Lancé");
 		
-		playerList.add(new Player("rafik","keke"));
+		playerList.add(new Player("rafik","keke",this));
 		
 	}
 	
@@ -108,12 +108,17 @@ public class Server implements Runnable{
 				return p;
 			}
 		}
-		return (new Player(nom,prenom));
+		return (new Player(nom,prenom,this));
 	}
 	
 	public boolean searchUser(String nom, String prenom){
+		System.out.println("debut recherche");
 		for(Player p : playerList){
+			System.out.println(p.toString());
+			System.out.println(p.getNom());
+			System.out.println(p.getPrenom());
 			if(p.getNom()==nom && p.getPrenom()==prenom){
+				System.out.println("trouver !!!");
 				return true;
 			}
 		}

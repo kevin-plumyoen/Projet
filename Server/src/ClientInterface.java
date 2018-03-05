@@ -45,7 +45,7 @@ public class ClientInterface implements Runnable {
 			}	
 			
 			if(subIn[0].contains("INS")){		
-				this.joueur = new Player(subIn[1],subIn[2]);
+				this.joueur = new Player(subIn[1],subIn[2],this.s);
 				if((s.searchUser(this.joueur))){
 					writer.println("ERR");
 					writer.flush();

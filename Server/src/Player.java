@@ -11,6 +11,8 @@ public class Player {
 	private static int nextId=0;
 	/**int id : id du joueur*/
 	private final int id;
+	/**server associ�*/
+	private static Server s;
 	
 	/**Statistiques du joueur*/
 	/**int nbGames : nombre de parties joué*/
@@ -27,7 +29,8 @@ public class Player {
 	 * @param nom String : nom du joueur
 	 * @param prenom String : prénom du joueur
 	 */
-	public Player(String nom, String prenom){
+	public Player(String nom, String prenom, Server s){
+		this.s = s;
 		this.nom=nom;
 		this.prenom=prenom;
 		
@@ -39,7 +42,7 @@ public class Player {
 		lastScore=0;
 		totalScore=0;
 		//Le classement du joueur est initialiser à -1 et lors de la première partie on lui attribura un classement 
-		rank=-1;
+		rank=this.s.getPlayerList().size();
 	}
 
 	/** Accesseur de l'attribut nbGames*/

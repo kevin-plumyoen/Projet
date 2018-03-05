@@ -129,7 +129,7 @@ public class Game implements Runnable{
 	public static void main(String[] args){
 		Server s = null;
 		Socket so = null;
-		Player p = new Player("paul", "jacque");
+		Player p = new Player("paul", "jacque",s);
 		
 		Game g = new Game(s,so,p);
 		
