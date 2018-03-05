@@ -99,6 +99,15 @@ public class Server implements Runnable{
 		this.playerList.add(p);
 	}
 	
+	public Player getPlayer(String nom, String prenom){
+		for(Player p : playerList){
+			if(p.getNom()==nom && p.getPrenom()==prenom){
+				return p;
+			}
+		}
+		return (new Player(nom,prenom));
+	}
+	
 	public boolean searchUser(String nom, String prenom){
 		for(Player p : playerList){
 			if(p.getNom()==nom && p.getPrenom()==prenom){

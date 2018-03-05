@@ -52,18 +52,22 @@ public class Game implements Runnable{
 		long debut = System.currentTimeMillis();
 		boolean abandon = false;
 		do {
+			System.out.println("attente d'une reponse");
 			try {
 				in = reader.readLine();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			System.out.println("une reponse 1");
 			String[] subIn = in.split(" ", 2);
 			if(subIn[0].contains("REP")) {
 				in.toUpperCase();
+				System.out.println("une reponse 2");
 				if(in.contains(mot)) {
 					writer.println("GOOD");
 					writer.flush();
+					System.out.println("correct");
 					this.run = false;
 				}
 				else {
