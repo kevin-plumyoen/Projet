@@ -11,10 +11,10 @@ public class Game {
 		scn = s;
 		con = c;
 		
-		game();
+		startGame();
 	}
 	
-	private void game(){
+	private void startGame(){
 		String rep = "";
 		boolean correct = false;
 		boolean good =false;

@@ -143,7 +143,7 @@ public class Menu {
 			}
 			
 			if(rep.matches("2")){
-				return;
+				continue;
 			}
 			else{
 				System.out.println("Option Inconnue : Ressayez");

@@ -21,7 +21,6 @@ public class ClientInterface implements Runnable {
 		this.s=s;
 	}
 
-	@Override
 	public void run() {		
 		try {
 			writer = new PrintWriter(sock.getOutputStream());
