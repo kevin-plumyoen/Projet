@@ -15,65 +15,115 @@ public class ClientInterface implements Runnable {
 	
 	private Server s;
 	private boolean connected = false;
+	private Player joueur;
 	
 	public ClientInterface(Socket client, Server s) {
 		sock = client;
 		this.s=s;
-	}
-
-	@Override
-	public void run() {		
+		
 		try {
 			writer = new PrintWriter(sock.getOutputStream());
 			reader = new BufferedReader (new InputStreamReader (sock.getInputStream()));
-		   
-
-			//Ã‰tape de connexion ou d'inscription 
-			do{
-				System.out.println("read");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void connect() {
+		do{
+			try {
 				in = reader.readLine();
-				System.out.println("fin read");
-				String[] subIn = in.split(" ", 3);
-				if(in.contains("INS")){				
-					s.addPlayer(new Player(subIn[1],subIn[2]));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String[] subIn = in.split(" ", 3);
+			this.joueur = new Player(subIn[1],subIn[2]);
+			if(subIn[0].contains("INS")){					
+				if((s.searchUser(this.joueur))){
+					writer.println("ERR");
+					writer.flush();
+				}
+				else {
+					s.addPlayer(this.joueur);
 					writer.println("ACK");
 					writer.flush();
 					this.connected=true;
 					System.out.println("Inscription Joueur");
 				}
-				else if(in.contains("CON")){
-					if(s.searchUser(subIn[1],subIn[2])){
-						writer.println("ACK");
-						writer.flush();
-						this.connected=true;
-						System.out.println("Connexion Joueur");
-					}
-					else{
-						writer.println("ERR");
-						writer.flush();
-					}
-				}
-			}while(!connected);			
-			//Mise en attente
-			do{
-				System.out.println("connecté ^^");
-				in = reader.readLine();
-				if(in.contains("QUIT")){
-					connected=false;
-					System.out.println("Fermeture InterfaceClient");
-				}
-				else if(in.contains("READY")) {
-					writer.println("START");
+				
+				
+			}
+			else if(subIn[0].contains("CON")){
+				if(s.searchUser(subIn[1],subIn[2])){
+					writer.println("ACK");
 					writer.flush();
-					System.out.println("start");
+					this.connected=true;
+					System.out.println("Connexion Joueur");
 				}
-			}while(connected);
+				else{
+					writer.println("ERR");
+					writer.flush();
+				}
+			}
+		}while(!connected);
+	}
+
+	@Override
+	public void run() {		
+	
+			//Ã‰tape de connexion ou d'inscription 
+			this.connect();
+			//Mise en attente
 			
-			this.sock.close();
+			this.attente();
 			
-		} catch (IOException e) {
+			try {
+				this.sock.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+	}
+
+	public void attente() {
+		// TODO Auto-generated method stub
+		do{
+			System.out.println("connecté ^^");
+			try {
+				in = reader.readLine();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(in.contains("QUIT")){
+				connected=false;
+				System.out.println("Fermeture InterfaceClient");
+			}
+			else if(in.contains("READY")) {
+				writer.println("START");
+				writer.flush();
+				System.out.println("start");
+				this.play();
+			}
+		}while(connected);
+	}
+
+	public void play() {
+		// TODO Auto-generated method stub
+		Thread j = new Thread(new Game(s, sock, joueur));
+		j.start();
+		
+		try {
+			j.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		this.attente();
 	}
 }
