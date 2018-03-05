@@ -22,6 +22,7 @@ public class Game {
 		
 		
 		while(!good){
+			scn.nextLine();
 			correct = false;
 			nbTries++;
 			while(!correct){
@@ -29,6 +30,9 @@ public class Game {
 				rep = scn.nextLine();
 				if(rep.length()!=5){
 					System.out.println("Réponse Incorrecte : Il n'y a que 5 lettres");
+				}
+				else{
+					correct = true;
 				}
 			}
 			con.writer.println("REP "+rep);

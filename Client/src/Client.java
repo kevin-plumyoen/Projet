@@ -17,15 +17,17 @@ public class Client{
 	
 	private void connexion(){
 		String host;
-		int port;
+		String port;
 		
 		System.out.print("Host : ");
 		host = scn.nextLine();
 		System.out.print("Port : ");
-		port = scn.nextInt();
+		port = scn.nextLine();
 		
-		con.host = host;
-		con.port = port;
+		if(!host.matches(""))
+			con.host = host;
+		if(!port.matches(""))
+			con.port = Integer.parseInt(port);
 		
 		//System.out.println(con.host);
 		//System.out.println(con.port);
