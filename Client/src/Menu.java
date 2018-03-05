@@ -15,6 +15,7 @@ public class Menu {
 	private String in;
 	
 	private boolean connected = false;
+	private boolean loop = true;
 	
 	public Menu(Connexion c) {
 		scn = new Scanner(System.in);
@@ -26,9 +27,10 @@ public class Menu {
 			e.printStackTrace();
 		}
 		
-		while(true){
+		while(loop){
 			mainMenu();
-			gameMenu();
+			if(connected)
+				gameMenu();
 		}
 	}
 	
@@ -42,9 +44,11 @@ public class Menu {
 				e.printStackTrace();
 		}
 		
-		while(true){
+		while(loop){
+			//System.out.println("LOOP :"+loop+" "+connected);
 			mainMenu();
-			gameMenu();
+			if(connected)
+				gameMenu();
 		}
 	}
 	
@@ -54,9 +58,10 @@ public class Menu {
 			System.out.println("[1] Connexion");
 			System.out.println("[2] Inscription");
 			System.out.println("[3] Quitter");
-			
-			String rep= scn.nextLine();
-			if(rep.matches("1")){
+
+			int rep= scn.nextInt();
+			scn.nextLine();
+			if(rep==1){
 				//Send Request
 				System.out.print("Nom : ");
 				nom = scn.nextLine();
@@ -81,7 +86,7 @@ public class Menu {
 				}
 			}
 			
-			if(rep.matches("2")){
+			if(rep==2){
 				//Send Request
 				System.out.print("Nom : ");
 				nom = scn.nextLine();
@@ -106,7 +111,8 @@ public class Menu {
 				}
 			}
 			
-			if(rep.matches("3")){
+			if(rep==3){
+				loop = false;
 				return;
 			}
 			else{
@@ -121,8 +127,8 @@ public class Menu {
 			System.out.println("[1] Lancer le jeu");
 			System.out.println("[2] Quitter");
 			
-			String rep= scn.nextLine();
-			if(rep.matches("1")){
+			int rep= scn.nextInt();
+			if(rep==1){
 				//Send READY State
 				con.writer.println("READY");
 				con.writer.flush();
@@ -142,13 +148,13 @@ public class Menu {
 				}
 			}
 			
-			if(rep.matches("2")){
-				continue;
+			if(rep==2){
+				connected = false;
+				return;
 			}
 			else{
 				System.out.println("Option Inconnue : Ressayez");
 			}
 		}
 	}
-	
 }

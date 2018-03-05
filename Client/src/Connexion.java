@@ -14,7 +14,7 @@ public class Connexion {
 		sock = null;
 		writer = null;
 		reader = null;
-		host = "128.0.0.1";
+		host = "localhost";
 		port = 60000;
 	}
 }
