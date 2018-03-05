@@ -20,6 +20,14 @@ public class ClientInterface implements Runnable {
 	public ClientInterface(Socket client, Server s) {
 		sock = client;
 		this.s=s;
+		try {
+			writer = new PrintWriter(sock.getOutputStream());
+			reader = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("lien etabli");
 	}
 	
 	public void connect() {

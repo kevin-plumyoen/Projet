@@ -54,9 +54,9 @@ public class Server implements Runnable{
 					System.out.println("Connexion cliente reçue.");
 					Thread t = new Thread(new ClientInterface(client,this));
 					t.start();					
-					for(Player p : playerList) {
-						System.out.println(p.toString());
-					}				
+//					for(Player p : playerList) {
+//						System.out.println(p.toString());
+//					}	
 					
 				} catch (IOException e) {
 					e.printStackTrace();
