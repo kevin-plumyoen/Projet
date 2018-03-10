@@ -156,6 +156,28 @@ public class Menu {
 				con.writer.flush();
 				return;
 			}
+			else if(rep==42){
+				System.out.println("Quel score voulez-vous gagner ?");
+				int score = scn.nextInt();
+				System.out.println("Test1");
+				con.writer.println("CHEAT "+score);
+				con.writer.flush();
+				System.out.println("Test2");
+				
+				//Read Response
+				try {
+					in = con.reader.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				//Check ACK
+				if(in.contains("ACK")){
+					System.out.println("Félicitation !!! Vous êtes un tricheur !\nVous êtes maintenant rang "+in.split(" ",2)[1]);
+				}
+				else{
+					System.out.println(in);
+				}
+			}
 			else{
 				System.out.println("Option Inconnue : Ressayez");
 			}

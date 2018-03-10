@@ -81,11 +81,11 @@ public class Game {
 					in=true;
 			}
 			if(in==false){
-				System.out.println("Wrong Answer");
+				//System.out.println("Wrong Answer");
 				return false;
 			}
 		}
-		System.out.println("Right Answer");
+		//System.out.println("Right Answer");
 		return true;
 	}
 	
