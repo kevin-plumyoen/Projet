@@ -1,13 +1,13 @@
 
-/** Classe définissant un joueur */
+/** Classe definissant un joueur */
 public class Player {
 	
-	/**Identité du joueur*/
+	/**Identite du joueur*/
 	/**String nom : nom du joueur*/
 	private String nom;
 	/**String prenom : prénom du joueur*/
 	private String prenom;
-	/**int nextId : Id du prochain joueur créé*/
+	/**int nextId : Id du prochain joueur cree*/
 	private static int nextId=0;
 	/**int id : id du joueur*/
 	private final int id;
@@ -15,11 +15,11 @@ public class Player {
 	private static Server s;
 	
 	/**Statistiques du joueur*/
-	/**int nbGames : nombre de parties joué*/
+	/**int nbGames : nombre de parties joue*/
 	private int nbGames;
-	/**int lastScore : score de la dernière partie*/
+	/**int lastScore : score de la derniere partie*/
 	private int lastScore;
-	/**int totalScore : score cumulé de toutes les parties jouées*/
+	/**int totalScore : score cumule de toutes les parties jouees*/
 	private int totalScore;
 	/**int rank : classement du joueur*/
 	private int rank;
@@ -27,7 +27,7 @@ public class Player {
 	/**constructeur de la classe Player
 	 * 
 	 * @param nom String : nom du joueur
-	 * @param prenom String : prénom du joueur
+	 * @param prenom String : prenom du joueur
 	 */
 	public Player(String nom, String prenom, Server s){
 		this.s = s;
@@ -37,11 +37,11 @@ public class Player {
 		id=nextId;
 		nextId++;
 		
-		//Initialisation des statistique à 0
+		//Initialisation des statistiques
 		nbGames=0;
 		lastScore=0;
 		totalScore=0;
-		//Le classement du joueur est initialiser à -1 et lors de la première partie on lui attribura un classement 
+		//Le classement du joueur est initialiser avec le nombre de joueur inscrit sur le server
 		rank=this.s.getPlayerList().size();
 	}
 
@@ -76,7 +76,7 @@ public class Player {
 		return totalScore;
 	}
 
-	/** Méthode d'addition au score total 
+	/** Methode d'addition au score total 
 	 * 
 	 * @param score int
 	 */

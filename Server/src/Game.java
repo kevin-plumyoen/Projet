@@ -60,7 +60,8 @@ public class Game implements Runnable{
 				e.printStackTrace();
 			}
 			System.out.println("une reponse 1");
-			in.toUpperCase();
+			in = in.toUpperCase();
+			System.out.println(in);
 			String[] subIn = in.split(" ", 2);
 			if(subIn[0].contains("REP")) {				
 				System.out.println("une reponse 2");
@@ -72,20 +73,34 @@ public class Game implements Runnable{
 				}
 				else {
 					String bad = "BAD ";
+					char[] reponse = subIn[1].toCharArray();
+					char given[] = {'?','?','?','?','?'};
+					char inter[] = {'?','?','?','?','?'};
+					char word[] = mot.toCharArray();
 					for(int i =0;i<subIn[1].length();i++) {
 						char rep = subIn[1].charAt(i);
 						char bon = mot.charAt(i);
 						if(rep==bon) {
-							bad += rep;
+							given[i] = rep;
+							word[i] = ' ';
 						}
 						else {
-							if(mot.contains(""+rep)) {
-								bad += "%";
-							}
-							else {
-								bad += "?";
-							}
+							inter[i] = rep;
 						}
+					}
+					for(int i = 0;i<inter.length;i++) {
+						char eval = inter[i];
+						if(eval!='?') {
+							for(int j = 0; j<word.length; j++) {
+								if(eval == word[j]) {
+									given[i] = '%';
+									word[j]=' ';
+								}
+							}
+						}						
+					}
+					for(char c : given) {
+						bad += String.valueOf(c);
 					}
 					writer.println(bad);
 					writer.flush();

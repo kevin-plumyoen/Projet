@@ -17,6 +17,9 @@ public class ClientInterface implements Runnable {
 	private boolean connected = false;
 	private Player joueur;
 	
+	private final static int nbJeuMax = 10;
+	private static int nbJeu = 0;
+	
 	public ClientInterface(Socket client, Server s) {
 		sock = client;
 		this.s=s;
@@ -130,7 +133,14 @@ public class ClientInterface implements Runnable {
 				writer.println("START");
 				writer.flush();
 				System.out.println("start");
-				this.play();
+				if(ClientInterface.nbJeuMax<=ClientInterface.nbJeuMax) {
+					this.play();
+				}
+				else {
+					writer.println("ERR "+"MaxGameRunning");
+					writer.flush();
+				}
+				
 			}
 			else if(in.contains("CHEAT")) {
 				this.joueur.addToTotalScore(Integer.parseInt(in.split(" ", 2)[1]));
@@ -146,6 +156,7 @@ public class ClientInterface implements Runnable {
 
 	public void play() {
 		// TODO Auto-generated method stub
+		ClientInterface.nbJeu++;
 		Thread j = new Thread(new Game(s, sock, joueur));
 		j.start();
 		
@@ -155,7 +166,7 @@ public class ClientInterface implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		ClientInterface.nbJeu--;
 		this.attente();
 	}
 }

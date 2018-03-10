@@ -7,28 +7,33 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
+
+/**Classe definissant la base du server*/
 public class Server implements Runnable{
-
+	
+	/**Nom du server*/	
 	private static final String Server = null;
-	//On initialise des valeurs par défaut
+	
+	/**Caracteristiques du server*/
+	/**Numero du port utiliser*/
 	private int port;
+	/**ServerSocket qui permet de gerer les connexions*/
 	private ServerSocket server = null;
+	/**Boolean qui indique si le server est en activite*/
 	private boolean isRunning;
-	private final int nbPlayerMax=10;
-	private int nbPlayer;
 	
+	/**Liste des joueur incrit sur le server*/
 	private ArrayList<Player> playerList = new ArrayList<Player>();
+
 	
-	public ArrayList<Player> getPlayerList() {
-		return playerList;
-	}
-
-	public void setPlayerList(ArrayList<Player> playerList) {
-		this.playerList = playerList;
-	}
-
+	/**constructeur du Sever sans chargement de sauvegarde
+	 * @param int pPort : numero du port
+	 * */
 	public Server(int pPort){
+		//Port prend la valeur de pPort
 		port = pPort;
+		
+		//On cree un ServerSocket
 		try {
 			server = new ServerSocket(port);
 		} catch (UnknownHostException e) {
@@ -36,79 +41,130 @@ public class Server implements Runnable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		isRunning=true;
-		System.out.println("Server Lancé");
 		
-		playerList.add(new Player("rafik","keke",this));
+		//On indique que le server est allume
+		isRunning=true;
+		System.out.println("Server Lance");
 		
 	}
 	
-	// On lance notre serveur
+	/**Fonction run pour efectivement lance le server*/
 	public void run() {
+		//Creation et lancement de la gestion du server
 		Gestion gestion = new Gestion(this);
 		Thread gere = new Thread(gestion);
 		gere.start();
+		
+		//Boucle de connection en provenance d'un client
 		while (isRunning) {
-			if(nbPlayer<nbPlayerMax){
-				try {
-					// On attend une connexion d'un client
-					Socket client = server.accept();
-					// Une fois reçue, on la traite dans un thread séparé
-					System.out.println("Connexion cliente reçue.");
-					Thread t = new Thread(new ClientInterface(client,this));
-					t.start();					
-//					for(Player p : playerList) {
-//						System.out.println(p.toString());
-//					}	
-					
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			
+			try {
+				// On attend une connexion d'un client
+				Socket client = server.accept();
+				// Une fois reussie, on la traite dans un thread separe
+				System.out.println("Connexion cliente reussie.");
+				Thread t = new Thread(new ClientInterface(client,this));
+				t.start();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		}
 
-		try {
-			server.close();
-			System.out.println("Server fermé");
-		} catch (IOException e) {
-			e.printStackTrace();
-			server = null;
 		}
+		
+		
+		//Fermeture propre du server
+		this.close(1);
 
 	}
-
+	
+	/**Mis � jour du rank des joueurs inscrit*/
 	public void majRank() {
 		// TODO Auto-generated method stub
+		//On parcours la liste de joueur inscrit
 		for (int i=1;i<playerList.size();i++) {
+			//Si le joueur au rank i est mal place
 			if(playerList.get(i).getTotalScore()>playerList.get(i-1).getTotalScore()) {
+				//On cherche le bon placement du joueur
 				for(int j=0;j<playerList.size();j++) {
-					if(playerList.get(i).getTotalScore()>playerList.get(i-1).getTotalScore()) {
+					//Des que l'on le trouve on place le joueur au bon endroit et on enleve le doublon � l'ancienne position
+					if(playerList.get(i).getTotalScore()>playerList.get(j).getTotalScore()) {
 						playerList.add(j, playerList.get(i));
 						playerList.remove(i+1);
+						break;
 					}
 				}				
 			}
 		}
-		for (int i=1;i<playerList.size();i++) {
+		//on met a jour tous les rank en leur attribuant leur place dans la liste de joueur
+		for (int i=0;i<playerList.size();i++) {
 			playerList.get(i).setRank(i+1);
 		}
 	}
 
-	public void close() {
-		isRunning = false;
+	
+	/**Methode de fermeture du server*/
+	public void close(int cas) {
+		switch (cas){
+		//fermeture sans sauvegarde
+		case 1 :
+			isRunning = false;
+			try {
+				server.close();
+				System.out.println("Server ferme");
+			} catch (IOException e) {
+				e.printStackTrace();
+				server = null;
+			}
+			break;
+		//Fermeture avec sauvegarde ( En cours d'implementation )
+		case 2 :
+			break;
+		//Fermeture par default ( sans sauvegarde )
+		default :
+			isRunning = false;
+			try {
+				server.close();
+				System.out.println("Server ferme");
+			} catch (IOException e) {
+				e.printStackTrace();
+				server = null;
+			}
+			break;
+		}
+		
 	}
 	
+	/**Methode d'ajout d'un nouveau joueur � la liste de joueur inscrit
+	 * 
+	 * @param p Player : joueur a ajouter
+	 */
 	public void addPlayer(Player p){
 		this.playerList.add(p);
 	}
 	
+	/** Methode permettant de retourer un joueur
+	 * 
+	 * @param nom String : nom du joueur
+	 * @param prenom String : prenom du joueur
+	 * @return
+	 */
 	public Player getPlayer(String nom, String prenom){
+		//parcours de la liste de joueur
 		for(Player p : playerList){
+			//On retourne le joueur quand on le trouve
 			if(p.getNom()==nom && p.getPrenom()==prenom){
 				return p;
 			}
 		}
-		return (new Player(nom,prenom,this));
+		return (null);
+	}
+	
+	public ArrayList<Player> getPlayerList() {
+		return playerList;
+	}
+
+	public void setPlayerList(ArrayList<Player> playerList) {
+		this.playerList = playerList;
 	}
 	
 	public boolean searchUser(String nom, String prenom){
@@ -136,7 +192,7 @@ public class Server implements Runnable{
 	}
 	
 	public static void main(String[] args){
-		Server s = new Server(60000);
+		Server s = new Server(80);
 		Thread t = new Thread(s);
 		t.start();
 		try {
