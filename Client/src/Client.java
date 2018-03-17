@@ -1,52 +1,60 @@
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Scanner;
 
-public class Client{
+public class Client implements Runnable{
 
 	private Connexion con;
-	private Scanner scn;
+	private UI ui;
 	
 	public Client(){
-		scn = new Scanner(System.in);
 		con = new Connexion();
-		connexion();
-		Menu m = new Menu(con,scn);
+		ui = new UI();
 	}
 	
-	private void connexion(){
-		String host;
-		String port;
-		
-		System.out.print("Host : ");
-		host = scn.nextLine();
-		System.out.print("Port : ");
-		port = scn.nextLine();
-		
-		if(!host.matches(""))
-			con.host = host;
-		if(!port.matches(""))
-			con.port = Integer.parseInt(port);
-		
-		//System.out.println(con.host);
-		//System.out.println(con.port);
-		
-		System.out.print("Trying to connect...");
-		
-		try {
-			con.sock = new Socket(con.host,con.port);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		System.out.println("Connected");
+	public void launch(){
+		ui.hostMenu(con);
+		ui.playerIdMenu(con);
 	}
-
+	
+	public void run(){
+		GameManager g = null;
+		BotManager b = null;
+		int i;
+		boolean loop=true;
+		launch();
+		
+		while(loop){
+			if(!con.isConnected())
+				if(!con.initSocket()) continue;
+			
+			if((i=ui.mainMenu(con))>0){
+				switch(i){
+					case 1 :
+						g=new GameManager(con,ui);
+						g.startGame();
+						break;
+					case 2 :
+						g=new GameManager(con,ui);
+						g.startGame();
+						break;
+					case 5 :
+						loop = false;
+						break;
+					case 6 :
+						b = new BotManager(con);
+						b.startWin();
+						break;
+					default :
+						System.out.println("Option Inconnue\n");
+						break;
+				}
+			}else{
+				System.err.println("Erreur "+i);
+			}
+		}
+	}
+	
 	 public static void main(String[] args) {
 		 Client c = new Client();		
+		 c.run();
 	 } 
 
 }
