@@ -56,8 +56,9 @@ public class Server implements Runnable{
 		gere.start();
 		
 		//Boucle de connection en provenance d'un client
-		while (isRunning) {
-			
+		while (isRunning && !this.server.isClosed()) {
+			System.out.println(isRunning);
+			System.out.println(this.server.isClosed());
 			try {
 				// On attend une connexion d'un client
 				Socket client = server.accept();
@@ -71,9 +72,14 @@ public class Server implements Runnable{
 
 		}
 		
-		
+		try {
+			server.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//Fermeture propre du server
-		this.close(1);
+		//this.fermeture(1);
 
 	}
 	
@@ -103,18 +109,20 @@ public class Server implements Runnable{
 
 	
 	/**Methode de fermeture du server*/
-	public void close(int cas) {
+	public void fermeture(int cas) {
 		switch (cas){
 		//fermeture sans sauvegarde
 		case 1 :
 			isRunning = false;
+			Socket soc = new Socket();
+			//soc.connect();
 			try {
 				server.close();
-				System.out.println("Server ferme");
-			} catch (IOException e) {
-				e.printStackTrace();
-				server = null;
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
+			System.out.println("Server ferme1");
 			break;
 		//Fermeture avec sauvegarde ( En cours d'implementation )
 		case 2 :

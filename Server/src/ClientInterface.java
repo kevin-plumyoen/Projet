@@ -14,7 +14,7 @@ public class ClientInterface implements Runnable {
 	private String out;
 	
 	private Server s;
-	private boolean connected = false;
+	private boolean connected = true;
 	private Player joueur;
 	
 	private final static int nbJeuMax = 10;
@@ -57,7 +57,7 @@ public class ClientInterface implements Runnable {
 					s.addPlayer(this.joueur);
 					writer.println("ACK");
 					writer.flush();
-					this.connected=true;
+					this.attente();
 					System.out.println("Inscription Joueur");
 				}
 				
@@ -70,7 +70,7 @@ public class ClientInterface implements Runnable {
 					writer.println("ACK");
 					writer.flush();
 					this.joueur = this.s.getPlayer(subIn[1],subIn[2]);
-					this.connected=true;
+					this.attente();
 					System.out.println("Connexion Joueur");
 				}
 				else{
@@ -80,6 +80,7 @@ public class ClientInterface implements Runnable {
 			}
 			else if(subIn[0].contains("QUIT")) {
 				System.out.println("quit");
+				this.connected=false;
 				try {
 					this.sock.close();
 				} catch (IOException e) {
@@ -92,7 +93,7 @@ public class ClientInterface implements Runnable {
 				writer.flush();
 				System.out.println(in);
 			}
-		}while(!connected);
+		}while(connected);
 	}
 
 	public void run() {		

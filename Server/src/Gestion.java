@@ -24,7 +24,7 @@ public class Gestion implements Runnable{
 			int choix = sc.nextInt();
 			switch (choix) {
 			case 1 :
-				serv.close();
+				serv.fermeture(1);
 				System.out.println("Server fermé");
 				run =false;
 				break;
