@@ -1,5 +1,5 @@
 
-public class Client implements Runnable{
+public class Client{
 
 	private Connexion con;
 	private UI ui;
@@ -14,7 +14,7 @@ public class Client implements Runnable{
 		ui.playerIdMenu(con);
 	}
 	
-	public void run(){
+	public void start(){
 		GameManager g = null;
 		BotManager b = null;
 		int i;
@@ -53,8 +53,8 @@ public class Client implements Runnable{
 	}
 	
 	 public static void main(String[] args) {
-		 Client c = new Client();		
-		 c.run();
+		 Client c = new Client();
+		 c.start();
 	 } 
 
 }

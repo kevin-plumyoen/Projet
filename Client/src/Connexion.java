@@ -37,6 +37,17 @@ public class Connexion {
 		setPlayer(n,s);
 	}
 	
+	public Connexion(Connexion c){
+		connected=false;
+		sock =null;
+		writer = null;
+		reader = null;
+		host = c.getHost();
+		port = c.getPort();
+		name = c.getPlayer().split(" ",2)[0];
+		surname = c.getPlayer().split(" ",2)[1];
+	}
+	
 	public void setConnexion(String h, String p){
 		if(!h.matches(""))
 			host = h;
