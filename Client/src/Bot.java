@@ -1,17 +1,32 @@
-
+/**
+ * @author Kevin Plumyoen
+ * 
+ * Classe de bot capable de jouer et gagner sans intervention de l'utilisateur
+ */
 public class Bot extends Thread{
 
+	/**Liste de lettres à essayer*/
 	static char charList[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','R','S','T','U','V','W','X','Y','Z'};
+	/**Nombre de bot créés. Sert pour déterminer les noms des bots*/
 	static int nbBot = 0;
+	/**Connexion au serveur*/
 	private Connexion con;
+	/**Nom du bot*/
 	private String name;
 	
+	/**
+	 * Constructeur du bot
+	 * @param c : Connexion à copié, contenant les informations du serveur et du compte du joueur
+	 */
 	public Bot(Connexion c){
 		con = new Connexion(c);
 		name = "Bot"+nbBot;
 		nbBot++;
 	}
 	
+	/**
+	 * Fonction executé par le thread
+	 */
 	public void run() {
 		
 		init();
@@ -27,6 +42,9 @@ public class Bot extends Thread{
 		disconnect();
 	}
 	
+	/**
+	 * Joue une partie
+	 */
 	private void play(){
 		if(startGame()){
 			System.out.println(name+" : Partie Lancée");
@@ -43,11 +61,17 @@ public class Bot extends Thread{
 		
 	}
 	
+	/**
+	 * Initialise la connexion et se connecte au compte du joueur
+	 */
 	private void init(){
 		con.initSocket();
 		connect();
 	}
 	
+	/**
+	 * Permet de se connecter au compte de l'utilisateur
+	 */
 	private void connect(){
 		con.write("CON "+con.getPlayer());
 		if(!con.read().contains("ACK")){
@@ -56,6 +80,10 @@ public class Bot extends Thread{
 		}
 	}
 
+	/**
+	 * Initialise le jeu
+	 * @return True si le jeu est lancé, false sinon
+	 */
 	private boolean startGame(){
 		con.write("READY");
 		
@@ -67,6 +95,10 @@ public class Bot extends Thread{
 		return true;
 	}
 	
+	/**
+	 * Joue et gagne au jeu, avec un maximum de temps de 1 minute
+	 * @return True si la partie est gagnée, false si elle a été abandonnée
+	 */
 	private boolean winGame(){
 		boolean win=false;
 		
@@ -103,20 +135,35 @@ public class Bot extends Thread{
 		return true;
 	}
 	
+	/**
+	 * Abandonne la partie
+	 */
 	private void quit(){
 		con.write("QUIT");
 	}
 	
+	/**
+	 * Se déconnecte du serveur et ferme le socket
+	 */
 	private void disconnect(){
 		con.write("DECON");
 		con.closeConnexion();
 	}
 	
+	/**
+	 * Reçoit les stat du joueur envoiés en fin de partie
+	 * @return String décrivant les points et le rang du joueur
+	 */
 	private String getStat(){
 		String rep[] = con.read().split(" ");
 		return name+" : Votre score est maintenant de "+rep[3]+" et vous êtes rang "+rep[4];
 	}
 	
+	/**
+	 * Transforme un tableau de caractère en String
+	 * @param c : Tableau de caractère à changer
+	 * @return String crée a partir du tableau
+	 */
 	private String charArrayToString(char c[]){
 		String s = new String();
 		

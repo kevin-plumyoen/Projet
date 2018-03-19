@@ -1,17 +1,31 @@
-
+/**
+ * @author Kevin Plumyoen
+ *
+ *	Classe chargé de gérer le déroulement du jeu
+ */
 public class GameManager {
+	/**UI fournissant les fonctions pour communiquer avec l'utilisateur*/
 	private UI ui;
+	/**Connexion à utiliser pour jouer*/
 	private Connexion con;
-	private Game g;
 	
+	/**
+	 * Constructeur de GameManager
+	 * @param c : Connexion au serveur
+	 * @param u : Interface Utilisateur
+	 */
 	public GameManager(Connexion c,UI u){
 		con=c;
 		ui=u;
 	}
 	
-	public void startGame(){
+	/**
+	 * Affiche le menu du jeu et gère l'option choisi par le joueur
+	 */
+	public void gameMenu(){
 		int i;
 		boolean loop=true;
+		Game g;
 		
 		while(loop){
 			if((i=ui.gameMenu(con))>0){
@@ -41,6 +55,10 @@ public class GameManager {
 		
 	}
 	
+	/**
+	 * Fonction qui signale au serveur que le client est prêt à jouer
+	 * @return True si le serveur accepte, false s'il refuse
+	 */
 	public boolean ready(){
 		con.write("READY");
 		String rep = con.read();
@@ -48,6 +66,9 @@ public class GameManager {
 		else return false;
 	}
 	
+	/**
+	 * Préviens le serveur que le client se déconnecte puis ferme la connexion
+	 */
 	public void disconnexion(){
 		con.write("DECON");
 		con.closeConnexion();

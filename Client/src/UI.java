@@ -1,20 +1,35 @@
 import java.util.Scanner;
 
+/**
+ * @author Kevin Plumyoen
+ *
+ *	Classe gérant l'interface utilisateur
+ */
 public class UI {
-	
+	/**Suite de lettres autorisées en jeu*/
 	static final private String allowedLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	
+	/**Scanner permettant à l'utilisateur d'entrer du texte dans le programme*/
 	private Scanner scn;
-	private String in;
 	
+	/**
+	 * Constructeur par défaut de UI
+	 */
 	public UI() {
 		scn = new Scanner(System.in);
 	}
 	
+	/**
+	 * Constructeur paramettré de UI
+	 * @param s : Scanner
+	 */
 	public UI(Scanner s){
 		scn = s;
 	}
 	
+	/**
+	 * Affiche le menu de configuration des info serveur et permet au joueur d'inscrire des informations
+	 * @param c : Connexion à configurer
+	 */
 	public void hostMenu(Connexion c){
 		String host;
 		String port;
@@ -28,6 +43,10 @@ public class UI {
 		c.setConnexion(host,port);
 	}
 	
+	/**
+	 * Affiche le menu de configuration des info joueur et permet au joueur d'inscrire des informations
+	 * @param c : Connexion à configurer
+	 */
 	public void playerIdMenu(Connexion c){
 		String name;
 		String surname;
@@ -41,7 +60,13 @@ public class UI {
 		c.setPlayer(name, surname);
 	}
 	
+	/**
+	 * Affiche le menu principal du jeu et permet au joueur de choisir une option
+	 * @param c : Connexion à configurer
+	 */
 	public int mainMenu(Connexion c){
+		String in = null;
+		
 		System.out.println(" /////////// MENU /////////// ");
 		System.out.println("[1] Connexion");
 		System.out.println("[2] Inscription");
@@ -99,6 +124,10 @@ public class UI {
 		}
 	}
 	
+	/**
+	 * Affiche le menu de jeu et permet au joueur de choisir une option
+	 * @param c : Connexion à configurer
+	 */
 	public int gameMenu(Connexion c){
 		System.out.println(" /////////// JEU /////////// ");
 		System.out.println("[1] Lancer le jeu");
@@ -119,6 +148,10 @@ public class UI {
 		}
 	}
 	
+	/**
+	 * Permet au joueur d'entrer une réponse au jeu et vérifie la validité de la réponse
+	 * @return String entrée par le joueur
+	 */
 	public String gameInput(){
 		String rep = null;
 		boolean correct = false;
@@ -140,6 +173,11 @@ public class UI {
 		return rep;
 	}
 	
+	/**
+	 * Vérifie la validité de la réponse fournie
+	 * @param ans : String réponse à vérifié
+	 * @return True si réponse valide, false si réponse invalide
+	 */
 	private boolean checkAnswer(String ans){
 		boolean in;
 		for(int i=0;i<5;i++){
@@ -149,11 +187,9 @@ public class UI {
 					in=true;
 			}
 			if(in==false){
-				//System.out.println("Wrong Answer");
 				return false;
 			}
 		}
-		//System.out.println("Right Answer");
 		return true;
 	}
 }

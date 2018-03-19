@@ -1,16 +1,29 @@
+/**
+ * @author Kevin Plumyoen
+ *
+ *	Classe décrivant le déroulement d'une partie
+ */
 public class Game {
-	
+	/**UI fournissant les fonctions pour communiquer avec l'utilisateur*/
 	private UI ui;
+	/**Connexion à utiliser pour jouer*/
 	private Connexion con;
-	private int nbTries;
 	
+	/**
+	 * Constructeur de Game
+	 * @param c : Connexion au serveur
+	 * @param u : Interface Utilisateur
+	 */
 	public Game(Connexion c,UI u){
 		con=c;
 		ui=u;
-		nbTries=0;
 	}
 	
+	/**
+	 * Permet à l'utilisateur de jouer
+	 */
 	public void play(){
+		int nbTries=0;
 		boolean good=false;
 		String rep = "";
 		
@@ -39,6 +52,9 @@ public class Game {
 		displayResult();
 	}
 	
+	/**
+	 * Reçoit et affiche les statistiques du joueur
+	 */
 	public void displayResult(){
 		System.out.println("Lecture de vos statistiques...\n");
 		String in = con.read();
@@ -50,10 +66,18 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Préviens le serveur que le joueur abandonne le jeu
+	 */
 	public void quit(){
 		con.write("QUIT");
 	}
 	
+	/**
+	 * Compte le nombre de lettres bonnes mais mal placés
+	 * @param ans : Réponse reçu du serveur
+	 * @return Nombre de lettres mal placés
+	 */
 	private int countGoodLetters(String ans){
 		int gl = 0;
 		for(int i=0;i<5;i++){
